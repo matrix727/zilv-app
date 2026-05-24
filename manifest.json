@@ -1,0 +1,11 @@
+{
+  "name": "自律记录",
+  "short_name": "自律",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f5f0eb",
+  "theme_color": "#8b6914",
+  "icons": [
+    { "src": "icon.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
