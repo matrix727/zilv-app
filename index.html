@@ -221,8 +221,9 @@ function render() {
   var delBtns = container.querySelectorAll('.record-del');
   for (var di = 0; di < delBtns.length; di++) {
     delBtns[di].addEventListener('click', function() {
+      var btn = this;
       if (confirm('删除这条记录？后续记录的时间差也会随之改变。')) {
-        records = records.filter(function(rr) { return rr.id !== this.dataset.id; });
+        records = records.filter(function(rr) { return rr.id !== btn.dataset.id; });
         saveRecords(records);
         render();
       }
