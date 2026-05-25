@@ -19,162 +19,73 @@
   }
   .container { max-width: 600px; margin: 0 auto; padding: 20px 16px; }
 
-  header {
-    text-align: center;
-    padding: 28px 0 8px;
-  }
-  header h1 {
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: #4a3728;
-  }
+  header { text-align: center; padding: 28px 0 8px; }
+  header h1 { font-size: 26px; font-weight: 700; letter-spacing: 0.04em; color: #4a3728; }
   #clock {
-    font-size: 15px;
-    color: #8b7355;
-    margin-top: 6px;
+    font-size: 15px; color: #8b7355; margin-top: 6px;
     font-variant-numeric: tabular-nums;
     font-family: "SF Mono", "Cascadia Code", "Consolas", monospace;
   }
 
   .input-area {
-    display: flex;
-    gap: 10px;
-    margin: 20px 0 28px;
-    position: sticky;
-    top: 12px;
-    z-index: 10;
+    display: flex; gap: 10px; margin: 20px 0 28px;
+    position: sticky; top: 12px; z-index: 10;
   }
   .input-area input {
-    flex: 1;
-    padding: 14px 18px;
-    border: 2px solid #d4c5b2;
-    border-radius: 14px;
-    font-size: 17px;
-    background: #fff;
-    color: #3d3226;
-    outline: none;
-    transition: border-color 0.2s;
-    min-width: 0;
+    flex: 1; padding: 14px 18px; border: 2px solid #d4c5b2; border-radius: 14px;
+    font-size: 17px; background: #fff; color: #3d3226; outline: none; transition: border-color 0.2s; min-width: 0;
   }
   .input-area input:focus { border-color: #b8956a; }
   .input-area input::placeholder { color: #c4b5a3; }
   .input-area button {
-    padding: 14px 24px;
-    background: #8b6914;
-    color: #fff;
-    border: none;
-    border-radius: 14px;
-    font-size: 17px;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
+    padding: 14px 24px; background: #8b6914; color: #fff; border: none; border-radius: 14px;
+    font-size: 17px; font-weight: 600; cursor: pointer; white-space: nowrap;
     transition: background 0.2s, transform 0.1s;
   }
   .input-area button:hover { background: #6b5010; }
   .input-area button:active { transform: scale(0.97); }
 
-  .quick-actions {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin: -12px 0 24px;
-  }
+  .quick-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: -12px 0 24px; }
   .quick-actions button {
-    padding: 8px 16px;
-    background: #ede4d8;
-    border: 1px solid #d4c5b2;
-    border-radius: 20px;
-    font-size: 14px;
-    color: #5c4a32;
-    cursor: pointer;
-    transition: background 0.2s;
+    padding: 8px 16px; background: #ede4d8; border: 1px solid #d4c5b2; border-radius: 20px;
+    font-size: 14px; color: #5c4a32; cursor: pointer; transition: background 0.2s;
   }
   .quick-actions button:hover { background: #ddd2c2; }
 
-  .day-group {
-    margin-bottom: 32px;
-  }
-  .day-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-  .day-date {
-    font-size: 18px;
-    font-weight: 700;
-    color: #4a3728;
-  }
-  .day-total {
-    font-size: 13px;
-    color: #8b7355;
-    background: #ede4d8;
-    padding: 3px 10px;
-    border-radius: 10px;
-  }
+  .day-group { margin-bottom: 32px; }
+  .day-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .day-date { font-size: 18px; font-weight: 700; color: #4a3728; }
 
   .record-list { display: flex; flex-direction: column; gap: 0; }
   .record {
-    display: flex;
-    align-items: flex-start;
-    padding: 12px 14px;
-    background: #fff;
-    border-radius: 12px;
-    margin-bottom: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    position: relative;
-    transition: box-shadow 0.15s;
+    display: flex; align-items: flex-start; padding: 12px 14px; background: #fff;
+    border-radius: 12px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    position: relative; transition: box-shadow 0.15s;
   }
   .record:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
 
   .record-time {
     font-family: "SF Mono", "Cascadia Code", "Consolas", monospace;
-    font-size: 15px;
-    font-weight: 600;
-    color: #5c4a32;
-    min-width: 52px;
-    margin-right: 18px;
-    padding-top: 2px;
+    font-size: 15px; font-weight: 600; color: #5c4a32;
+    min-width: 52px; margin-right: 18px; padding-top: 2px;
   }
   .record-body { flex: 1; min-width: 0; }
-  .record-activity {
-    font-size: 17px;
-    font-weight: 600;
-    color: #3d3226;
+  .record-activity { font-size: 17px; font-weight: 600; color: #3d3226; }
+  .record-dur {
+    font-size: 13px; color: #b8956a; margin-top: 2px;
   }
-  .record-wrapup {
-    font-size: 13px;
-    color: #b8956a;
-    margin-top: 2px;
-  }
-  .record-wrapup strong { color: #8b6914; font-weight: 600; }
-  .record-no-prev {
-    font-size: 12px;
-    color: #c4b5a3;
-    margin-top: 2px;
-    font-style: italic;
-  }
+  .record-dur.live { color: #8b6914; font-weight: 600; }
+
   .record-del {
-    background: none;
-    border: none;
-    color: #c4b5a3;
-    cursor: pointer;
-    font-size: 18px;
-    padding: 2px 6px;
-    border-radius: 6px;
-    line-height: 1;
-    transition: color 0.2s, background 0.2s;
-    flex-shrink: 0;
+    background: none; border: none; color: #c4b5a3; cursor: pointer;
+    font-size: 18px; padding: 2px 6px; border-radius: 6px; line-height: 1;
+    transition: color 0.2s, background 0.2s; flex-shrink: 0;
   }
   .record-del:hover { color: #d44; background: #fef0f0; }
 
   .empty {
-    text-align: center;
-    color: #c4b5a3;
-    padding: 60px 20px;
-    font-size: 16px;
-    line-height: 1.8;
+    text-align: center; color: #c4b5a3; padding: 60px 20px;
+    font-size: 16px; line-height: 1.8;
   }
   .empty-icon { font-size: 48px; display: block; margin-bottom: 12px; }
 
@@ -207,18 +118,12 @@
 const STORAGE_KEY = 'zilv_records';
 
 function loadRecords() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch { return []; }
+  try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : []; }
+  catch { return []; }
 }
-function saveRecords(records) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
-}
+function saveRecords(records) { localStorage.setItem(STORAGE_KEY, JSON.stringify(records)); }
 
-function genId() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-}
+function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
 
 function fmtTime(iso) {
   const d = new Date(iso);
@@ -240,78 +145,70 @@ function fmtDate(iso) {
 
 function fmtDuration(minutes) {
   if (minutes < 1) return '不到1分钟';
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
+  var h = Math.floor(minutes / 60);
+  var m = minutes % 60;
   if (h === 0) return m + ' 分钟';
   if (m === 0) return h + ' 小时';
   return h + ' 小时 ' + m + ' 分钟';
 }
 
 function groupByDate(records) {
-  const groups = [];
-  for (const r of records) {
-    const d = new Date(r.time);
-    const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-    let group = groups.find(g => g.key === key);
-    if (!group) {
-      group = { key, date: new Date(d.getFullYear(), d.getMonth(), d.getDate()), records: [] };
-      groups.push(group);
-    }
+  var groups = [];
+  for (var i = 0; i < records.length; i++) {
+    var r = records[i];
+    var d = new Date(r.time);
+    var key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    var group = null;
+    for (var j = 0; j < groups.length; j++) { if (groups[j].key === key) { group = groups[j]; break; } }
+    if (!group) { group = { key: key, records: [] }; groups.push(group); }
     group.records.push(r);
   }
   return groups;
 }
 
-let records = loadRecords();
+var records = loadRecords();
+var liveTimer = null;
 
 function render() {
-  const container = document.getElementById('recordGroups');
+  var container = document.getElementById('recordGroups');
 
   if (records.length === 0) {
     container.innerHTML = '<div class="empty"><span class="empty-icon">🕐</span>还没有记录<br>输入"睡觉"或"学习"开始记录吧</div>';
+    clearInterval(liveTimer);
     return;
   }
 
-  const groups = groupByDate(records);
-  let html = '';
+  var groups = groupByDate(records);
+  var now = new Date();
+  var html = '';
 
-  for (const group of groups) {
-    const totalMin = group.records.reduce((sum, r, i) => {
-      if (i > 0) {
-        return sum + Math.round((new Date(r.time) - new Date(group.records[i - 1].time)) / 60000);
-      }
-      return sum;
-    }, 0);
-
+  for (var gi = 0; gi < groups.length; gi++) {
+    var group = groups[gi];
     html += '<div class="day-group">';
-    html += '<div class="day-header">';
-    html += '<span class="day-date">' + fmtDate(group.records[0].time) + '</span>';
-    if (totalMin > 0) {
-      html += '<span class="day-total">合计 ' + fmtDuration(totalMin) + '</span>';
-    }
-    html += '</div><div class="record-list">';
+    html += '<div class="day-header"><span class="day-date">' + fmtDate(group.records[0].time) + '</span></div>';
+    html += '<div class="record-list">';
 
-    for (let i = 0; i < group.records.length; i++) {
-      const r = group.records[i];
+    for (var i = 0; i < group.records.length; i++) {
+      var r = group.records[i];
+      var globalIdx = -1;
+      for (var k = 0; k < records.length; k++) { if (records[k].id === r.id) { globalIdx = k; break; } }
+      var isLast = globalIdx === records.length - 1;
+
+      var durHtml = '';
+      if (isLast) {
+        var durMin = Math.round((now - new Date(r.time)) / 60000);
+        durHtml = '<div class="record-dur live" data-id="' + r.id + '">至今 · ' + fmtDuration(durMin) + '</div>';
+      } else {
+        var next = records[globalIdx + 1];
+        var durMin2 = Math.round((new Date(next.time) - new Date(r.time)) / 60000);
+        durHtml = '<div class="record-dur">持续 ' + fmtDuration(durMin2) + '</div>';
+      }
+
       html += '<div class="record">';
       html += '<span class="record-time">' + fmtTime(r.time) + '</span>';
       html += '<div class="record-body">';
       html += '<div class="record-activity">' + escHtml(r.activity) + '</div>';
-      if (i > 0) {
-        const prev = group.records[i - 1];
-        const durMin = Math.round((new Date(r.time) - new Date(prev.time)) / 60000);
-        html += '<div class="record-wrapup"><strong>' + escHtml(prev.activity) + '</strong> 持续了 ' + fmtDuration(durMin) + '</div>';
-      } else if (records.indexOf(r) === 0) {
-        html += '<div class="record-no-prev">开始记录</div>';
-      } else {
-        // First record of this group, but not the first record ever - look at the previous record in the full list
-        const idx = records.indexOf(r);
-        if (idx > 0) {
-          const prev = records[idx - 1];
-          const durMin = Math.round((new Date(r.time) - new Date(prev.time)) / 60000);
-          html += '<div class="record-wrapup"><strong>' + escHtml(prev.activity) + '</strong> 持续了 ' + fmtDuration(durMin) + '</div>';
-        }
-      }
+      html += durHtml;
       html += '</div>';
       html += '<button class="record-del" data-id="' + r.id + '" title="删除">×</button>';
       html += '</div>';
@@ -321,34 +218,50 @@ function render() {
 
   container.innerHTML = html;
 
-  // Bind delete buttons
-  container.querySelectorAll('.record-del').forEach(btn => {
-    btn.addEventListener('click', function() {
+  var delBtns = container.querySelectorAll('.record-del');
+  for (var di = 0; di < delBtns.length; di++) {
+    delBtns[di].addEventListener('click', function() {
       if (confirm('删除这条记录？后续记录的时间差也会随之改变。')) {
-        records = records.filter(r => r.id !== this.dataset.id);
+        records = records.filter(function(rr) { return rr.id !== this.dataset.id; });
         saveRecords(records);
         render();
       }
     });
-  });
+  }
+
+  // Live update for the duration of the last (current) record
+  clearInterval(liveTimer);
+  if (records.length > 0) {
+    liveTimer = setInterval(updateLiveDurations, 30000);
+  }
+}
+
+function updateLiveDurations() {
+  if (records.length === 0) return;
+  var last = records[records.length - 1];
+  var el = document.querySelector('.record-dur.live[data-id="' + last.id + '"]');
+  if (el) {
+    var durMin = Math.round((new Date() - new Date(last.time)) / 60000);
+    el.textContent = '至今 · ' + fmtDuration(durMin);
+  }
 }
 
 function escHtml(s) {
-  const div = document.createElement('div');
+  var div = document.createElement('div');
   div.textContent = s;
   return div.innerHTML;
 }
 
 function addRecord(activity) {
-  const now = new Date().toISOString();
-  records.push({ id: genId(), activity, time: now });
+  var now = new Date().toISOString();
+  records.push({ id: genId(), activity: activity, time: now });
   saveRecords(records);
   render();
 }
 
 document.getElementById('submitBtn').addEventListener('click', function() {
-  const input = document.getElementById('activityInput');
-  const val = input.value.trim();
+  var input = document.getElementById('activityInput');
+  var val = input.value.trim();
   if (!val) return;
   addRecord(val);
   input.value = '';
@@ -356,32 +269,25 @@ document.getElementById('submitBtn').addEventListener('click', function() {
 });
 
 document.getElementById('activityInput').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') {
-    document.getElementById('submitBtn').click();
-  }
+  if (e.key === 'Enter') document.getElementById('submitBtn').click();
 });
 
-// Quick action buttons
-const QUICK_ACTIONS = ['睡觉', '吃早饭', '吃午饭', '吃晚饭', '学习', '工作', '休息', '娱乐', '运动', '洗漱'];
+var QUICK_ACTIONS = ['睡觉', '吃早饭', '吃午饭', '吃晚饭', '学习', '工作', '休息', '娱乐', '运动', '洗漱'];
 function renderQuickActions() {
-  const container = document.getElementById('quickActions');
-  container.innerHTML = QUICK_ACTIONS.map(a =>
-    '<button class="quick-btn">' + escHtml(a) + '</button>'
-  ).join('');
-  container.querySelectorAll('.quick-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      addRecord(this.textContent);
-    });
-  });
+  var container2 = document.getElementById('quickActions');
+  container2.innerHTML = QUICK_ACTIONS.map(function(a) { return '<button class="quick-btn">' + escHtml(a) + '</button>'; }).join('');
+  var qbs = container2.querySelectorAll('.quick-btn');
+  for (var q = 0; q < qbs.length; q++) {
+    qbs[q].addEventListener('click', function() { addRecord(this.textContent); });
+  }
 }
 
-// Clock
 function updateClock() {
-  const now = new Date();
+  var now2 = new Date();
   document.getElementById('clock').textContent =
-    now.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }) +
+    now2.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }) +
     '  ' +
-    now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+    now2.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
 }
 updateClock();
 setInterval(updateClock, 1000);
