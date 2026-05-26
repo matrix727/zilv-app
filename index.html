@@ -12,10 +12,7 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: #f5f0eb;
-    color: #3d3226;
-    min-height: 100vh;
-    padding-bottom: 40px;
+    background: #f5f0eb; color: #3d3226; min-height: 100vh; padding-bottom: 40px;
   }
   .container { max-width: 600px; margin: 0 auto; padding: 20px 16px; }
 
@@ -52,36 +49,55 @@
   }
   .quick-actions button:hover { background: #ddd2c2; }
 
-  .day-group { margin-bottom: 32px; }
-  .day-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-  .day-date { font-size: 18px; font-weight: 700; color: #4a3728; }
-
-  .record-list { display: flex; flex-direction: column; gap: 0; }
-  .record {
-    display: flex; align-items: flex-start; padding: 12px 14px; background: #fff;
-    border-radius: 12px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    position: relative; transition: box-shadow 0.15s;
+  /* Month group */
+  .month-group { margin-bottom: 8px; }
+  .month-toggle {
+    display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+    background: #ede4d8; border: none; border-radius: 12px;
+    font-size: 16px; font-weight: 700; color: #4a3728;
+    cursor: pointer; width: 100%; text-align: left;
+    transition: background 0.15s;
   }
-  .record:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .month-toggle:hover { background: #e0d6c6; }
+  .month-arrow { font-size: 12px; transition: transform 0.2s; color: #8b7355; }
+  .month-group.collapsed .month-arrow { transform: rotate(-90deg); }
+  .month-count { font-size: 13px; color: #8b7355; font-weight: 400; margin-left: auto; }
+
+  /* Day group */
+  .day-group { margin: 4px 0 4px 8px; }
+  .day-toggle {
+    display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+    background: transparent; border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 600; color: #5c4a32;
+    cursor: pointer; width: 100%; text-align: left;
+    transition: background 0.15s;
+  }
+  .day-toggle:hover { background: #f0ebe0; }
+  .day-arrow { font-size: 11px; transition: transform 0.2s; color: #b8956a; }
+  .day-group.collapsed .day-arrow { transform: rotate(-90deg); }
+
+  .record-list { display: flex; flex-direction: column; gap: 0; padding-left: 8px; }
+  .record {
+    display: flex; align-items: flex-start; padding: 10px 14px; background: #fff;
+    border-radius: 10px; margin-bottom: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
 
   .record-time {
     font-family: "SF Mono", "Cascadia Code", "Consolas", monospace;
-    font-size: 15px; font-weight: 600; color: #5c4a32;
-    min-width: 52px; margin-right: 18px; padding-top: 2px;
+    font-size: 14px; font-weight: 600; color: #5c4a32;
+    min-width: 50px; margin-right: 14px; padding-top: 1px;
   }
   .record-body { flex: 1; min-width: 0; }
-  .record-activity { font-size: 17px; font-weight: 600; color: #3d3226; }
-  .record-dur {
-    font-size: 13px; color: #b8956a; margin-top: 2px;
-  }
+  .record-activity { font-size: 16px; font-weight: 600; color: #3d3226; }
+  .record-dur { font-size: 13px; color: #b8956a; margin-top: 1px; }
   .record-dur.live { color: #8b6914; font-weight: 600; }
 
   .record-del {
     background: none; border: none; color: #c4b5a3; cursor: pointer;
-    font-size: 18px; padding: 2px 6px; border-radius: 6px; line-height: 1;
-    transition: color 0.2s, background 0.2s; flex-shrink: 0;
+    font-size: 18px; padding: 4px 8px; border-radius: 6px; line-height: 1;
+    flex-shrink: 0; min-width: 32px; text-align: center;
   }
-  .record-del:hover { color: #d44; background: #fef0f0; }
+  .record-del:active { color: #d44; background: #fef0f0; }
 
   .empty {
     text-align: center; color: #c4b5a3; padding: 60px 20px;
@@ -89,9 +105,11 @@
   }
   .empty-icon { font-size: 48px; display: block; margin-bottom: 12px; }
 
+  .collapsed .record-list, .collapsed .day-groups { display: none; }
+
   @media (max-width: 400px) {
     .container { padding: 12px 10px; }
-    .record-time { min-width: 44px; margin-right: 10px; font-size: 13px; }
+    .record-time { min-width: 42px; margin-right: 8px; font-size: 13px; }
     .record-activity { font-size: 15px; }
     .input-area input { padding: 12px 14px; font-size: 16px; }
     .input-area button { padding: 12px 16px; font-size: 15px; }
@@ -115,28 +133,35 @@
 </div>
 
 <script>
-const STORAGE_KEY = 'zilv_records';
+var STORAGE_KEY = 'zilv_records';
+var COLLAPSE_KEY = 'zilv_collapse';
 
 function loadRecords() {
-  try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : []; }
-  catch { return []; }
+  try { var raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : []; }
+  catch(e) { return []; }
 }
-function saveRecords(records) { localStorage.setItem(STORAGE_KEY, JSON.stringify(records)); }
+function saveRecords(arr) { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+
+function loadCollapse() {
+  try { var raw = localStorage.getItem(COLLAPSE_KEY); return raw ? JSON.parse(raw) : {}; }
+  catch(e) { return {}; }
+}
+function saveCollapse(obj) { localStorage.setItem(COLLAPSE_KEY, JSON.stringify(obj)); }
 
 function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
 
 function fmtTime(iso) {
-  const d = new Date(iso);
+  var d = new Date(iso);
   return d.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', hour12: false });
 }
 
 function fmtDate(iso) {
-  const d = new Date(iso);
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const target = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-  const diffDays = Math.round((today - target) / 86400000);
-  const dateStr = d.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', weekday: 'short' });
+  var d = new Date(iso);
+  var now = new Date();
+  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  var target = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  var diffDays = Math.round((today - target) / 86400000);
+  var dateStr = d.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', weekday: 'short' });
   if (diffDays === 0) return '今天 · ' + dateStr;
   if (diffDays === 1) return '昨天 · ' + dateStr;
   if (diffDays === 2) return '前天 · ' + dateStr;
@@ -152,22 +177,98 @@ function fmtDuration(minutes) {
   return h + ' 小时 ' + m + ' 分钟';
 }
 
-function groupByDate(records) {
-  var groups = [];
-  for (var i = 0; i < records.length; i++) {
-    var r = records[i];
+// Group records: month -> day -> records (each array is oldest-first from data)
+// Display will be reversed to newest-first
+function groupAll(recordsArr) {
+  var months = [];
+  for (var i = 0; i < recordsArr.length; i++) {
+    var r = recordsArr[i];
     var d = new Date(r.time);
-    var key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-    var group = null;
-    for (var j = 0; j < groups.length; j++) { if (groups[j].key === key) { group = groups[j]; break; } }
-    if (!group) { group = { key: key, records: [] }; groups.push(group); }
-    group.records.push(r);
+    var mKey = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+    var dKey = mKey + '-' + String(d.getDate()).padStart(2, '0');
+
+    // Find or create month
+    var month = null;
+    for (var mi = 0; mi < months.length; mi++) {
+      if (months[mi].key === mKey) { month = months[mi]; break; }
+    }
+    if (!month) {
+      month = { key: mKey, year: d.getFullYear(), month: d.getMonth() + 1, days: [] };
+      months.push(month);
+    }
+
+    // Find or create day
+    var day = null;
+    for (var di = 0; di < month.days.length; di++) {
+      if (month.days[di].key === dKey) { day = month.days[di]; break; }
+    }
+    if (!day) {
+      day = { key: dKey, date: new Date(d.getFullYear(), d.getMonth(), d.getDate()), records: [] };
+      month.days.push(day);
+    }
+    day.records.push(r);
   }
-  return groups;
+  return months; // months are oldest-first, days within month oldest-first, records within day oldest-first
+}
+
+function fmtMonthKey(key) {
+  var parts = key.split('-');
+  return parts[0] + '年' + parseInt(parts[1], 10) + '月';
 }
 
 var records = loadRecords();
+var collapseState = loadCollapse();
 var liveTimer = null;
+
+// Use event delegation on the container for delete clicks
+document.getElementById('recordGroups').addEventListener('click', function(e) {
+  var delBtn = e.target.closest('.record-del');
+  if (delBtn) {
+    e.stopPropagation();
+    var rid = delBtn.getAttribute('data-id');
+    if (confirm('删除这条记录？')) {
+      deleteRecordById(rid);
+    }
+    return;
+  }
+
+  var monthToggle = e.target.closest('.month-toggle');
+  if (monthToggle) {
+    var mk = monthToggle.getAttribute('data-month');
+    toggleMonth(mk);
+    return;
+  }
+
+  var dayToggle = e.target.closest('.day-toggle');
+  if (dayToggle) {
+    var dk = dayToggle.getAttribute('data-day');
+    toggleDay(dk);
+    return;
+  }
+});
+
+function deleteRecordById(id) {
+  for (var i = records.length - 1; i >= 0; i--) {
+    if (records[i].id === id) {
+      records.splice(i, 1);
+      break;
+    }
+  }
+  saveRecords(records);
+  render();
+}
+
+function toggleMonth(key) {
+  collapseState[key] = !collapseState[key];
+  saveCollapse(collapseState);
+  render();
+}
+
+function toggleDay(key) {
+  collapseState[key] = !collapseState[key];
+  saveCollapse(collapseState);
+  render();
+}
 
 function render() {
   var container = document.getElementById('recordGroups');
@@ -178,59 +279,78 @@ function render() {
     return;
   }
 
-  var groups = groupByDate(records);
+  var months = groupAll(records);
   var now = new Date();
   var html = '';
 
-  for (var gi = 0; gi < groups.length; gi++) {
-    var group = groups[gi];
-    html += '<div class="day-group">';
-    html += '<div class="day-header"><span class="day-date">' + fmtDate(group.records[0].time) + '</span></div>';
-    html += '<div class="record-list">';
+  // Display months newest first
+  for (var mi = months.length - 1; mi >= 0; mi--) {
+    var month = months[mi];
+    var mKey = month.key;
+    var mCollapsed = collapseState[mKey];
+    var mLabel = fmtMonthKey(mKey);
 
-    for (var i = 0; i < group.records.length; i++) {
-      var r = group.records[i];
-      var globalIdx = -1;
-      for (var k = 0; k < records.length; k++) { if (records[k].id === r.id) { globalIdx = k; break; } }
-      var isLast = globalIdx === records.length - 1;
+    // Count total records in this month
+    var mCount = 0;
+    for (var dc = 0; dc < month.days.length; dc++) { mCount += month.days[dc].records.length; }
 
-      var durHtml = '';
-      if (isLast) {
-        var durMin = Math.round((now - new Date(r.time)) / 60000);
-        durHtml = '<div class="record-dur live" data-id="' + r.id + '">至今 · ' + fmtDuration(durMin) + '</div>';
-      } else {
-        var next = records[globalIdx + 1];
-        var durMin2 = Math.round((new Date(next.time) - new Date(r.time)) / 60000);
-        durHtml = '<div class="record-dur">持续 ' + fmtDuration(durMin2) + '</div>';
+    html += '<div class="month-group' + (mCollapsed ? ' collapsed' : '') + '">';
+    html += '<button class="month-toggle" data-month="' + mKey + '">';
+    html += '<span class="month-arrow">▼</span>';
+    html += mLabel;
+    html += '<span class="month-count">' + mCount + '条</span>';
+    html += '</button>';
+    html += '<div class="day-groups">';
+
+    // Display days newest first
+    for (var di = month.days.length - 1; di >= 0; di--) {
+      var day = month.days[di];
+      var dKey = day.key;
+      var dCollapsed = collapseState[dKey];
+      var dLabel = fmtDate(day.records[0].time);
+
+      html += '<div class="day-group' + (dCollapsed ? ' collapsed' : '') + '">';
+      html += '<button class="day-toggle" data-day="' + dKey + '">';
+      html += '<span class="day-arrow">▼</span>';
+      html += dLabel;
+      html += '</button>';
+      html += '<div class="record-list">';
+
+      // Records within day: newest first
+      for (var ri = day.records.length - 1; ri >= 0; ri--) {
+        var r = day.records[ri];
+        var globalIdx = -1;
+        for (var k = 0; k < records.length; k++) { if (records[k].id === r.id) { globalIdx = k; break; } }
+        var isLast = globalIdx === records.length - 1;
+
+        var durHtml = '';
+        if (isLast) {
+          var durMin = Math.round((now - new Date(r.time)) / 60000);
+          durHtml = '<div class="record-dur live">至今 · ' + fmtDuration(durMin) + '</div>';
+        } else {
+          var next = records[globalIdx + 1];
+          var durMin2 = Math.round((new Date(next.time) - new Date(r.time)) / 60000);
+          durHtml = '<div class="record-dur">持续 ' + fmtDuration(durMin2) + '</div>';
+        }
+
+        html += '<div class="record">';
+        html += '<span class="record-time">' + fmtTime(r.time) + '</span>';
+        html += '<div class="record-body">';
+        html += '<div class="record-activity">' + escHtml(r.activity) + '</div>';
+        html += durHtml;
+        html += '</div>';
+        html += '<button class="record-del" data-id="' + r.id + '">×</button>';
+        html += '</div>';
       }
 
-      html += '<div class="record">';
-      html += '<span class="record-time">' + fmtTime(r.time) + '</span>';
-      html += '<div class="record-body">';
-      html += '<div class="record-activity">' + escHtml(r.activity) + '</div>';
-      html += durHtml;
-      html += '</div>';
-      html += '<button class="record-del" data-id="' + r.id + '" title="删除">×</button>';
-      html += '</div>';
+      html += '</div></div>'; // record-list, day-group
     }
-    html += '</div></div>';
+
+    html += '</div></div>'; // day-groups, month-group
   }
 
   container.innerHTML = html;
 
-  var delBtns = container.querySelectorAll('.record-del');
-  for (var di = 0; di < delBtns.length; di++) {
-    delBtns[di].addEventListener('click', function() {
-      var btn = this;
-      if (confirm('删除这条记录？后续记录的时间差也会随之改变。')) {
-        records = records.filter(function(rr) { return rr.id !== btn.dataset.id; });
-        saveRecords(records);
-        render();
-      }
-    });
-  }
-
-  // Live update for the duration of the last (current) record
   clearInterval(liveTimer);
   if (records.length > 0) {
     liveTimer = setInterval(updateLiveDurations, 30000);
@@ -240,7 +360,7 @@ function render() {
 function updateLiveDurations() {
   if (records.length === 0) return;
   var last = records[records.length - 1];
-  var el = document.querySelector('.record-dur.live[data-id="' + last.id + '"]');
+  var el = document.querySelector('.record-dur.live');
   if (el) {
     var durMin = Math.round((new Date() - new Date(last.time)) / 60000);
     el.textContent = '至今 · ' + fmtDuration(durMin);
@@ -275,20 +395,20 @@ document.getElementById('activityInput').addEventListener('keydown', function(e)
 
 var QUICK_ACTIONS = ['睡觉', '吃早饭', '吃午饭', '吃晚饭', '学习', '工作', '休息', '娱乐', '运动', '洗漱'];
 function renderQuickActions() {
-  var container2 = document.getElementById('quickActions');
-  container2.innerHTML = QUICK_ACTIONS.map(function(a) { return '<button class="quick-btn">' + escHtml(a) + '</button>'; }).join('');
-  var qbs = container2.querySelectorAll('.quick-btn');
+  var c2 = document.getElementById('quickActions');
+  c2.innerHTML = QUICK_ACTIONS.map(function(a) { return '<button class="quick-btn">' + escHtml(a) + '</button>'; }).join('');
+  var qbs = c2.querySelectorAll('.quick-btn');
   for (var q = 0; q < qbs.length; q++) {
     qbs[q].addEventListener('click', function() { addRecord(this.textContent); });
   }
 }
 
 function updateClock() {
-  var now2 = new Date();
+  var n = new Date();
   document.getElementById('clock').textContent =
-    now2.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }) +
+    n.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }) +
     '  ' +
-    now2.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+    n.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
 }
 updateClock();
 setInterval(updateClock, 1000);
